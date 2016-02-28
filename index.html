@@ -1,0 +1,62 @@
+<!DOCTYPE html> 
+<html lang=en> 
+
+<head>  
+	<meta charset="utf-8"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<meta name="viewport" content="width=device-width,initial-scale=1"> 
+	
+	<title>Your Profile- Knockout JS</title>  
+
+	<link rel="stylesheet" href="bootstrap-3.3.6/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+	<div class="container">
+		<h1>Your Profile</h1>
+
+		<p>First name: <strong data-bind="text: firstName"></strong></p>
+		<p>Last name: <strong data-bind="text: lastName"></strong></p>
+		<p>Last name: <strong data-bind="text: fullName"></strong></p>
+
+		<form>
+			<div class="form-group">
+				<label for="firstNameInput">First Name</label>
+				<input type="text" class="form-control" id="firstNameInput" placeholder="First Name" data-bind="value: firstName">
+			</div>
+			<div class="form-group">
+				<label for="lastNameInput">Last Name</label>
+				<input type="text" class="form-control" id="lastNameInput" placeholder="Last Name" data-bind="value: lastName">
+			</div>
+			<button class="btn btn-primary" data-bind="click: capitalizeLastName">Go Caps</button>
+		</form>
+
+	</div>
+	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/knockout-3.4.0.js"></script>
+
+    <script type="text/javascript">
+    	// This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
+		function AppViewModel() {
+		    this.firstName = ko.observable("James");
+		    this.lastName = ko.observable("G");
+		    this.fullName = ko.computed(function () {
+		        return this.firstName() + " " + this.lastName();
+		    }, this);
+		    
+		    this.capitalizeLastName = function() {
+		        var currentVal = this.lastName();
+		        this.lastName(currentVal.toUpperCase());
+		    };
+		}
+
+		// Activates knockout.js
+		ko.applyBindings(new AppViewModel());
+    </script>
+</body>
+
+</html>
