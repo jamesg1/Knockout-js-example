@@ -17,8 +17,8 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h1>Seat reservations</h1>
-				<button class="btn btn-primary" data-bind="click: addSeat">Add Reservation</button>
+				<h1>Seat reservations (<span data-bind="text: seats().length"></span>)</h1>
+				<button class="btn btn-primary" data-bind="click: addSeat, enable: seats().length < 6">Add Reservation</button>
 				<table class="table table-striped">
 				    <thead>
 				    	<tr>
