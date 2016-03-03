@@ -38,6 +38,9 @@
 				        </tr>    
 				    </tbody>
 				</table>
+				<h3 class="pull-right" data-bind="visible: totalSurcharge() > 0">
+				    Total surcharge: $<span data-bind="text: totalSurcharge().toFixed(2)"></span>
+				</h3>
 			</div>
 		</div>
 	</div>
@@ -82,6 +85,12 @@
 	    self.removeSeat = function(seat){
         	self.seats.remove(seat);
     	}
+    	self.totalSurcharge = ko.computed(function() {
+	        var total = 0;
+	        for (var i = 0; i < self.seats().length; i++)
+	            total += self.seats()[i].meal().price;
+	        return total;
+    	});
 	}
 	ko.applyBindings(new ReservationsViewModel());
 	</script>
