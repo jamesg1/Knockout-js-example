@@ -6,9 +6,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 	<meta name="viewport" content="width=device-width,initial-scale=1"> 
 	
-	<title>Single Page Application - Knockout JS</title>  
+	<title>Webmail App - Knockout JS</title>  
 
 	<link rel="stylesheet" href="bootstrap-3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -36,26 +37,48 @@
             </div>
     	</div>
     </nav>
+
+    <div class="container main-section">
+    	<!-- Mails grid -->
+		<table class="table table-striped" data-bind="with: chosenSectionData">
+		    <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
+		    <tbody data-bind="foreach: mails">
+		        <tr>
+		            <td data-bind="text: from"></td>
+		            <td data-bind="text: to"></td>
+		            <td data-bind="text: subject"></td>
+		            <td data-bind="text: date"></td>
+		        </tr>     
+		    </tbody>
+		</table>
+    </div>
 </div>
 	
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="bootstrap-3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/knockout-3.4.0.js"></script>
+<script type="text/javascript" src="js/fakeData.js"></script>
 
 <script type="text/javascript">
+
 	function WebmailViewModel(){
 		// Data 
 		var self = this;
 		self.sections = ['Inbox', 'Archive', 'Sent', 'Spam'];
 		self.chosenSectionId = ko.observable();
+		self.chosenSectionData = ko.observable();
 
 		// Behaviours 
 		self.goToSection = function(section){
 			self.chosenSectionId(section);
+			self.chosenSectionData({ mails: fakeData[section] });
 		}
-	}
 
+		self.goToSection('Inbox');
+	}
+	    
 	ko.applyBindings(new WebmailViewModel());
+
 </script>
 </body>
 
