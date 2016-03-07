@@ -5,16 +5,11 @@
 	<meta charset="utf-8"> 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 	<meta name="viewport" content="width=device-width,initial-scale=1"> 
-	
 	<title>Webmail App - Knockout JS</title>  
-
 	<link rel="stylesheet" href="bootstrap-3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
-
 </head>
-
 <body>
-
 <div class="container">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -38,12 +33,11 @@
     	</div>
     </nav>
 
-    <div class="container main-section">
-    	<!-- Mails grid -->
+    <div class="container">
 		<table class="table table-striped" data-bind="with: chosenSectionData">
 		    <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
 		    <tbody data-bind="foreach: mails">
-		        <tr>
+		        <tr data-bind="click: $root.goToMail">
 		            <td data-bind="text: from"></td>
 		            <td data-bind="text: to"></td>
 		            <td data-bind="text: subject"></td>
@@ -51,6 +45,15 @@
 		        </tr>     
 		    </tbody>
 		</table>
+		<div data-bind="with: chosenMailData">
+		    <div class="mailMessage">
+		        <h1 data-bind="text: subject"></h1>
+		        <p><label>From</label>: <span data-bind="text: from"></span></p>
+		        <p><label>To</label>: <span data-bind="text: to"></span></p>
+		        <p><label>Date</label>: <span data-bind="text: date"></span></p>
+    		    <p class="message" data-bind="html: messageContent" />
+		    </div>
+		</div>
     </div>
 </div>
 	
@@ -67,12 +70,21 @@
 		self.sections = ['Inbox', 'Archive', 'Sent', 'Spam'];
 		self.chosenSectionId = ko.observable();
 		self.chosenSectionData = ko.observable();
+		self.chosenMailData = ko.observable();
 
 		// Behaviours 
 		self.goToSection = function(section){
 			self.chosenSectionId(section);
+	        self.chosenMailData(null);
 			self.chosenSectionData({ mails: fakeData[section] });
 		}
+		self.goToMail = function(mail){
+	        self.chosenSectionId(mail.folder);
+	        self.chosenSectionData(null);
+	        self.chosenMailData(ko.utils.arrayFirst(fakeData[mail.folder], function(item) {
+                return item.id == mail.id;                                              
+            }));
+	    };
 
 		self.goToSection('Inbox');
 	}
